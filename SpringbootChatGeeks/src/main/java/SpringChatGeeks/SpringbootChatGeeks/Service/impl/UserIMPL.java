@@ -2,7 +2,9 @@ package SpringChatGeeks.SpringbootChatGeeks.Service.impl;
 
 import SpringChatGeeks.SpringbootChatGeeks.Dto.LoginDTO;
 import SpringChatGeeks.SpringbootChatGeeks.Dto.UserDTO;
+import SpringChatGeeks.SpringbootChatGeeks.Entity.Contact;
 import SpringChatGeeks.SpringbootChatGeeks.Entity.User;
+import SpringChatGeeks.SpringbootChatGeeks.Repo.ContactRepo;
 import SpringChatGeeks.SpringbootChatGeeks.Repo.UserRepo;
 import SpringChatGeeks.SpringbootChatGeeks.Service.UserService;
 import SpringChatGeeks.SpringbootChatGeeks.response.LoginResponse;
@@ -19,6 +21,9 @@ public class UserIMPL implements UserService {
     private UserRepo userRepo;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ContactRepo contactRepo;
 
 
     @Override
@@ -63,15 +68,44 @@ public class UserIMPL implements UserService {
                 Optional<User> user = userRepo.findOneByEmailAndPassword(loginDTO.getEmail(), encodedPassword);
 
                 if (user.isPresent()) {
-                    return new LoginResponse("Login Successful", true);
+                    return new LoginResponse("Login Successful", true, user);
                 } else {
-                    return new LoginResponse("Login Failed", false);
+                    return new LoginResponse("Login Failed", false, user);
                 }
             } else {
-                return new LoginResponse("Password Not Match", false);
+                return null;
             }
         } else {
-            return new LoginResponse("Email Not Exist", false);
+            return null;
         }
     }
+
+    @Override
+    public void addContactToChatList(int loggedInUserId, int contactUserId) {
+        // Implement logic to add a contact to the user's chat list
+        User loggedInUser = userRepo.findById(loggedInUserId).orElse(null);
+        User contactUser = userRepo.findById(contactUserId).orElse(null);
+
+        if (loggedInUser != null && contactUser != null) {
+            // Check if the contact is not already in the chat list
+
+
+            if (!contactRepo.existsByUserAndContactUser(loggedInUser, contactUser)) {
+                Contact contact = new Contact(loggedInUser, contactUser);
+                contactRepo.save(contact);
+                System.out.println("Contact added successfully!");
+            }else {
+                // The contact is already in the chat list
+                // You may want to handle this case, e.g., by returning a different response
+                System.out.println("Contact is already in the chat list.");
+            }
+        }
+    }
+
+    @Override
+    public List<User> getChatList(int loggedInUserId) {
+        return userRepo.getChatList(loggedInUserId);
+    }
 }
+
+

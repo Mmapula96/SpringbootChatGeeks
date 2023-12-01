@@ -2,7 +2,10 @@ package SpringChatGeeks.SpringbootChatGeeks.UserController;
 
 import SpringChatGeeks.SpringbootChatGeeks.Dto.LoginDTO;
 import SpringChatGeeks.SpringbootChatGeeks.Dto.UserDTO;
+
+import SpringChatGeeks.SpringbootChatGeeks.Entity.Contact;
 import SpringChatGeeks.SpringbootChatGeeks.Entity.User;
+import SpringChatGeeks.SpringbootChatGeeks.Repo.ContactRepo;
 import SpringChatGeeks.SpringbootChatGeeks.Repo.UserRepo;
 import SpringChatGeeks.SpringbootChatGeeks.Service.UserService;
 import SpringChatGeeks.SpringbootChatGeeks.response.LoginResponse;
@@ -14,9 +17,8 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("api/v1/user")
-
 public class UserController {
 
     private final UserService userService;
@@ -24,6 +26,8 @@ public class UserController {
     @Autowired
     private UserRepo userRepo;
 
+
+    private ContactRepo contactRepo;
     @GetMapping("/all")
     public List<User> getAllUsers() {
         return userRepo.findAll();
@@ -56,7 +60,14 @@ public class UserController {
         return ResponseEntity.ok(loginResponse);
     }
 
+    @PostMapping("/{loggedInUserId}/add-contact/{contactUserId}")
+    public void addContactToChatList(@PathVariable int loggedInUserId, @PathVariable int contactUserId) {
+        userService.addContactToChatList(loggedInUserId, contactUserId);
 
-
-
+    }
+    @GetMapping("/{loggedInUserId}/chat-list")
+    public ResponseEntity<List<User>> getChatList(@PathVariable int loggedInUserId) {
+        List<User> chatList = userService.getChatList(loggedInUserId);
+        return ResponseEntity.ok(chatList);
+    }
 }
