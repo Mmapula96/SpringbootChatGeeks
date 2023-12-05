@@ -20,4 +20,6 @@ public interface UserService {
     void addContactToChatList(int loggedInUserId, int contactUserId);
 
     List<User> getChatList(int loggedInUserId);
+
+    User getUserById(int selectedUserId);
 }

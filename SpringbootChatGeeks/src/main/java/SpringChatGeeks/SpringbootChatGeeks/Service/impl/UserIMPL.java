@@ -70,13 +70,14 @@ public class UserIMPL implements UserService {
                 if (user.isPresent()) {
                     return new LoginResponse("Login Successful", true, user);
                 } else {
-                    return new LoginResponse("Login Failed", false, user);
+                    return new LoginResponse("Incorrect Email or Password", false, user);
                 }
             } else {
-                return null;
+                return new LoginResponse("Incorrect password", false, null);
             }
         } else {
-            return null;
+            // User not found
+            return new LoginResponse("User not found", false, null);
         }
     }
 
@@ -106,6 +107,14 @@ public class UserIMPL implements UserService {
     public List<User> getChatList(int loggedInUserId) {
         return userRepo.getChatList(loggedInUserId);
     }
+
+    public User getUserById(int userId) {
+        Optional<User> userOptional = userRepo.findById(userId);
+        return userOptional.orElse(null);
+    }
+
+
+
 }
 
 

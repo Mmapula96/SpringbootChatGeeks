@@ -29,5 +29,7 @@ public interface UserRepo extends JpaRepository<User,Integer> {
 
     @Query("SELECT c.contactUser FROM Contact c WHERE c.user.userid = :loggedInUserId")
     List<User> getChatList(@Param("loggedInUserId") int loggedInUserId);
+
+    Optional<User> findById(int id);
 }
 

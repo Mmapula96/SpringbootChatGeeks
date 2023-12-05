@@ -3,7 +3,6 @@ package SpringChatGeeks.SpringbootChatGeeks.UserController;
 import SpringChatGeeks.SpringbootChatGeeks.Dto.LoginDTO;
 import SpringChatGeeks.SpringbootChatGeeks.Dto.UserDTO;
 
-import SpringChatGeeks.SpringbootChatGeeks.Entity.Contact;
 import SpringChatGeeks.SpringbootChatGeeks.Entity.User;
 import SpringChatGeeks.SpringbootChatGeeks.Repo.ContactRepo;
 import SpringChatGeeks.SpringbootChatGeeks.Repo.UserRepo;
@@ -61,13 +60,30 @@ public class UserController {
     }
 
     @PostMapping("/{loggedInUserId}/add-contact/{contactUserId}")
-    public void addContactToChatList(@PathVariable int loggedInUserId, @PathVariable int contactUserId) {
-        userService.addContactToChatList(loggedInUserId, contactUserId);
+    public void addContactToChatList(@PathVariable String loggedInUserId, @PathVariable String contactUserId) {
+
+        userService.addContactToChatList(Integer.parseInt(loggedInUserId), Integer.parseInt(contactUserId));
+
 
     }
     @GetMapping("/{loggedInUserId}/chat-list")
     public ResponseEntity<List<User>> getChatList(@PathVariable int loggedInUserId) {
         List<User> chatList = userService.getChatList(loggedInUserId);
         return ResponseEntity.ok(chatList);
+
     }
+    @GetMapping("/selected-user/{selectedUserId}")
+    public ResponseEntity<User> getSelectedUser(@PathVariable int selectedUserId) {
+        // Retrieve detailed information about the selected user
+        User selectedUser = userService.getUserById(selectedUserId);
+
+        if (selectedUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // You can add more details or modify the user object as needed
+        return ResponseEntity.ok(selectedUser);
+    }
+
+
 }
