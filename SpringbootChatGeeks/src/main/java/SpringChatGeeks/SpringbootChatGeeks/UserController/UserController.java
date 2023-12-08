@@ -25,7 +25,7 @@ public class UserController {
     @Autowired
     private UserRepo userRepo;
 
-
+//Get all the contacts
     private ContactRepo contactRepo;
     @GetMapping("/all")
     public List<User> getAllUsers() {
@@ -45,19 +45,21 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
+//register the user
     @PostMapping("/save")
     public String saveUser(@RequestBody UserDTO userDTO){
         String id=userService.addUser(userDTO);
         return id;
     }
-
+//user login
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO){
 
         LoginResponse loginResponse= userService.loginUser(loginDTO);
         return ResponseEntity.ok(loginResponse);
     }
+
+    //Add contacts to the chatlist
 
     @PostMapping("/{loggedInUserId}/add-contact/{contactUserId}")
     public void addContactToChatList(@PathVariable String loggedInUserId, @PathVariable String contactUserId) {
@@ -66,12 +68,16 @@ public class UserController {
 
 
     }
+
+    //get them to the chatlist
     @GetMapping("/{loggedInUserId}/chat-list")
     public ResponseEntity<List<User>> getChatList(@PathVariable int loggedInUserId) {
         List<User> chatList = userService.getChatList(loggedInUserId);
         return ResponseEntity.ok(chatList);
 
     }
+
+    //select the user i added from the chatist to appearon the chat thread
     @GetMapping("/selected-user/{selectedUserId}")
     public ResponseEntity<User> getSelectedUser(@PathVariable int selectedUserId) {
         // Retrieve detailed information about the selected user
@@ -81,7 +87,6 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
 
-        // You can add more details or modify the user object as needed
         return ResponseEntity.ok(selectedUser);
     }
 
