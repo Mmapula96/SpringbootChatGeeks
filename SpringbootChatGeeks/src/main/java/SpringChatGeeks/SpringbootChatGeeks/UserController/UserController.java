@@ -27,11 +27,14 @@ public class UserController {
 
 
     private ContactRepo contactRepo;
+
+    //get all the users
     @GetMapping("/all")
     public List<User> getAllUsers() {
         return userRepo.findAll();
     }
 
+    //search the user by thier username
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/search/{name}")
     public List<User> searchUsersByUsername(@PathVariable String name) {
@@ -46,11 +49,13 @@ public class UserController {
         this.userService = userService;
     }
 
+    //Register the user
     @PostMapping("/save")
     public String saveUser(@RequestBody UserDTO userDTO){
         String id=userService.addUser(userDTO);
         return id;
     }
+    //The user login
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO){
@@ -59,6 +64,8 @@ public class UserController {
         return ResponseEntity.ok(loginResponse);
     }
 
+    //add the user I searched to the chat list
+
     @PostMapping("/{loggedInUserId}/add-contact/{contactUserId}")
     public void addContactToChatList(@PathVariable String loggedInUserId, @PathVariable String contactUserId) {
 
@@ -66,12 +73,16 @@ public class UserController {
 
 
     }
+
+    //get the user I added to the chatlist
     @GetMapping("/{loggedInUserId}/chat-list")
     public ResponseEntity<List<User>> getChatList(@PathVariable int loggedInUserId) {
         List<User> chatList = userService.getChatList(loggedInUserId);
         return ResponseEntity.ok(chatList);
 
     }
+
+    //select the user to be able to start the conversation
     @GetMapping("/selected-user/{selectedUserId}")
     public ResponseEntity<User> getSelectedUser(@PathVariable int selectedUserId) {
         // Retrieve detailed information about the selected user
