@@ -1,7 +1,7 @@
-package SpringChatGeeks.SpringbootChatGeeks.UserController;
+package SpringChatGeeks.SpringbootChatGeeks.Controller;
 
-import SpringChatGeeks.SpringbootChatGeeks.Dto.LoginDTO;
-import SpringChatGeeks.SpringbootChatGeeks.Dto.UserDTO;
+import SpringChatGeeks.SpringbootChatGeeks.Dto.LoginDto;
+import SpringChatGeeks.SpringbootChatGeeks.Dto.UserDto;
 
 import SpringChatGeeks.SpringbootChatGeeks.Entity.User;
 import SpringChatGeeks.SpringbootChatGeeks.Repo.ContactRepo;
@@ -47,15 +47,15 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public String saveUser(@RequestBody UserDTO userDTO){
-        String id=userService.addUser(userDTO);
+    public String saveUser(@RequestBody UserDto userDto){
+        String id=userService.addUser(userDto);
         return id;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO){
+    public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto){
 
-        LoginResponse loginResponse= userService.loginUser(loginDTO);
+        LoginResponse loginResponse= userService.loginUser(loginDto);
         return ResponseEntity.ok(loginResponse);
     }
 
