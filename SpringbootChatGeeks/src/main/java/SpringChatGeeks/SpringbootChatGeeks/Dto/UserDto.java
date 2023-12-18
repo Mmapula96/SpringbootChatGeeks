@@ -1,25 +1,20 @@
 package SpringChatGeeks.SpringbootChatGeeks.Dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-public class UserDTO {
+public class UserDto {
 
     private int userid;
     private String username;
     private String email;
     private static String password;
 
-    public UserDTO(int userid, String username, String email, String password) {
+    public UserDto(int userid, String username, String email, String password) {
         this.userid = userid;
         this.username = username;
         this.email = email;
         this.password = password;
     }
 
-    public UserDTO() {
+    public UserDto() {
     }
 
     public int getUserid() {

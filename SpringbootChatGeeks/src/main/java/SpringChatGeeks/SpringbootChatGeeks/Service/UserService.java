@@ -1,19 +1,20 @@
 package SpringChatGeeks.SpringbootChatGeeks.Service;
 
-import SpringChatGeeks.SpringbootChatGeeks.Dto.LoginDTO;
-import SpringChatGeeks.SpringbootChatGeeks.Dto.UserDTO;
+import SpringChatGeeks.SpringbootChatGeeks.Dto.LoginDto;
+import SpringChatGeeks.SpringbootChatGeeks.Dto.UserDto;
 import SpringChatGeeks.SpringbootChatGeeks.Entity.User;
 import SpringChatGeeks.SpringbootChatGeeks.response.LoginResponse;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface UserService {
-    String addUser(UserDTO userDTO);
+    String addUser(UserDto userDTO);
 
-    LoginResponse loginResponse(LoginDTO loginDTO);
+    LoginResponse loginResponse(LoginDto loginDTO);
 
-    LoginResponse loginUser(LoginDTO loginDTO);
+    LoginResponse loginUser(LoginDto loginDTO);
 
 
     List<User> searchUsersByUsername(String username);

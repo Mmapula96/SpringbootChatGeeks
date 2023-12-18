@@ -1,7 +1,7 @@
-package SpringChatGeeks.SpringbootChatGeeks.UserController;
+package SpringChatGeeks.SpringbootChatGeeks.Controller;
 
-import SpringChatGeeks.SpringbootChatGeeks.Dto.LoginDTO;
-import SpringChatGeeks.SpringbootChatGeeks.Dto.UserDTO;
+import SpringChatGeeks.SpringbootChatGeeks.Dto.LoginDto;
+import SpringChatGeeks.SpringbootChatGeeks.Dto.UserDto;
 
 import SpringChatGeeks.SpringbootChatGeeks.Entity.User;
 import SpringChatGeeks.SpringbootChatGeeks.Repo.ContactRepo;
@@ -16,23 +16,23 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("api/v1/user")
 public class UserController {
 
+    @Autowired
     private final UserService userService;
 
     @Autowired
     private UserRepo userRepo;
 
-
+    @Autowired
     private ContactRepo contactRepo;
     @GetMapping("/all")
     public List<User> getAllUsers() {
+
         return userRepo.findAll();
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/search/{name}")
     public List<User> searchUsersByUsername(@PathVariable String name) {
         System.out.println("searching");
@@ -47,15 +47,15 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public String saveUser(@RequestBody UserDTO userDTO){
+    public String saveUser(@RequestBody UserDto userDTO){
         String id=userService.addUser(userDTO);
         return id;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO){
+    public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto){
 
-        LoginResponse loginResponse= userService.loginUser(loginDTO);
+        LoginResponse loginResponse= userService.loginUser(loginDto);
         return ResponseEntity.ok(loginResponse);
     }
 

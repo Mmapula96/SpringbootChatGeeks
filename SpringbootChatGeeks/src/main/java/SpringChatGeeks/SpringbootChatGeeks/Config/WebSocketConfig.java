@@ -19,7 +19,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
-        registry.addEndpoint("/websocket-chat").withSockJS();
+        registry.addEndpoint("/websocket-chat") .setAllowedOrigins("http://localhost:4200").withSockJS();
     }
 
 }

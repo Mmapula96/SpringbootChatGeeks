@@ -1,7 +1,7 @@
 package SpringChatGeeks.SpringbootChatGeeks.Service.impl;
 
-import SpringChatGeeks.SpringbootChatGeeks.Dto.LoginDTO;
-import SpringChatGeeks.SpringbootChatGeeks.Dto.UserDTO;
+import SpringChatGeeks.SpringbootChatGeeks.Dto.LoginDto;
+import SpringChatGeeks.SpringbootChatGeeks.Dto.UserDto;
 import SpringChatGeeks.SpringbootChatGeeks.Entity.Contact;
 import SpringChatGeeks.SpringbootChatGeeks.Entity.User;
 import SpringChatGeeks.SpringbootChatGeeks.Repo.ContactRepo;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserIMPL implements UserService {
+public class UserImpl implements UserService {
     @Autowired
     private UserRepo userRepo;
     @Autowired
@@ -34,11 +34,11 @@ public class UserIMPL implements UserService {
 
 
     @Override
-    public String addUser(UserDTO userDTO) {
+    public String addUser(UserDto userDTO) {
         User user = new User(
                 userDTO.getUsername(),
                 userDTO.getEmail(),
-                this.passwordEncoder.encode(UserDTO.getPassword())
+                this.passwordEncoder.encode(UserDto.getPassword())
         );
         System.out.println("adding " + user.toString());
         userRepo.save(user);
@@ -50,13 +50,13 @@ public class UserIMPL implements UserService {
 
 
     @Override
-    public LoginResponse loginResponse(LoginDTO loginDTO) {
+    public LoginResponse loginResponse(LoginDto loginDTO) {
         return null;
     }
 
 
     @Override
-    public LoginResponse loginUser(LoginDTO loginDTO) {
+    public LoginResponse loginUser(LoginDto loginDTO) {
         User user1 = userRepo.findByEmail(loginDTO.getEmail());
 
         if (user1 != null) {
