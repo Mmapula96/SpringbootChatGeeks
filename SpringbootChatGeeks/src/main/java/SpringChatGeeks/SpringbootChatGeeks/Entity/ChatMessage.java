@@ -5,11 +5,11 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "chatMessage")
+@Table(name = "message")
 public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String content;
     private String sender;
@@ -18,7 +18,6 @@ public class ChatMessage {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime timestamp;
 
-    // Constructors, getters, and setters
 
     public ChatMessage() {
         this.timestamp = LocalDateTime.now();
@@ -31,11 +30,11 @@ public class ChatMessage {
         this.timestamp = LocalDateTime.now();
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

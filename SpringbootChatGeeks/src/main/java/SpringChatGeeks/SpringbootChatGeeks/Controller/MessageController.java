@@ -5,15 +5,20 @@ import SpringChatGeeks.SpringbootChatGeeks.Entity.ChatMessage;
 import SpringChatGeeks.SpringbootChatGeeks.Repo.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
-
-
-@Controller
+@RestController
+@RequestMapping("api/messages")
 public class MessageController {
+
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
@@ -21,41 +26,26 @@ public class MessageController {
     @Autowired
     private MessageRepo messageRepo;
 
-//    @MessageMapping("/sendMessage")
-//    @SendTo("/topic/messages")
-//    public void sendMessage(ChatMessage chatMessage) {
-//
-//        messageRepo.save(chatMessage);
-//        // Send the message to the specified conversation
-////         messagingTemplate.convertAndSend("/topic/messages/" , chatMessage);
-//
-//        // Ensure that the conversationId is set correctly in the ChatMessage
-//        String conversationTopic = "/topic/messages/" + chatMessage.getConversationId();
-//
-//        // Send the message to the specified conversation
-//        messagingTemplate.convertAndSend(conversationTopic, chatMessage);
-//        System.out.println("sent to topic");
-//
-//
-//    }
-
-    @MessageMapping("/sendMessage")
-    @SendTo("/topic/messages")
-    public ChatMessage sendMessage(ChatMessage chatMessage) {
-        // Assuming you have a repository to save the message
+    @MessageMapping("/topic/messages")
+    public void sendMessage(ChatMessage chatMessage) {
         messageRepo.save(chatMessage);
+        System.out.println("Received message: " + chatMessage);
+        System.out.println("Sending message to /topic/messages/");
+        messagingTemplate.convertAndSend("/topic/messages/", chatMessage);
 
-        // Ensure that the conversationId is set correctly in the ChatMessage
-        String conversationTopic = "/topic/messages/" + chatMessage.getConversationId();
-
-        // Send the message to the specified conversation
+        String conversationTopic = "/app/topic/messages/" + chatMessage.getConversationId();
+        System.out.println("Sending message to " + conversationTopic);
         messagingTemplate.convertAndSend(conversationTopic, chatMessage);
-
-        System.out.println("Sent message to topic: " + conversationTopic);
-
-        // Return the saved chat message
-        return chatMessage;
     }
+
+    @GetMapping("messages/{conversationId}")
+    public List<ChatMessage> getConversationMessages(@PathVariable String conversationId) {
+        // Retrieve messages for the specified conversation from the database
+        return messageRepo.findByConversationId(conversationId);
+    }
+
+
+
 }
 
 
