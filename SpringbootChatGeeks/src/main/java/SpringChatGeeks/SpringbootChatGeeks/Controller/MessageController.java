@@ -4,6 +4,7 @@ package SpringChatGeeks.SpringbootChatGeeks.Controller;
 import SpringChatGeeks.SpringbootChatGeeks.Entity.ChatMessage;
 import SpringChatGeeks.SpringbootChatGeeks.Repo.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,6 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("api/messages")
 public class MessageController {
 
 
@@ -26,19 +26,18 @@ public class MessageController {
     @Autowired
     private MessageRepo messageRepo;
 
-    @MessageMapping("/topic/messages")
-    public void sendMessage(ChatMessage chatMessage) {
+    @MessageMapping("/api/messages/{ConversationID}")
+    public void sendMessage(@DestinationVariable String ConversationID, ChatMessage chatMessage) {
         messageRepo.save(chatMessage);
-        System.out.println("Received message: " + chatMessage);
-        System.out.println("Sending message to /topic/messages/");
-        messagingTemplate.convertAndSend("/topic/messages/", chatMessage);
 
-        String conversationTopic = "/app/topic/messages/" + chatMessage.getConversationId();
+      //  messagingTemplate.convertAndSend("/topic/messages/", chatMessage);
+
+        String conversationTopic = "/topic/messages/" + ConversationID;
         System.out.println("Sending message to " + conversationTopic);
         messagingTemplate.convertAndSend(conversationTopic, chatMessage);
     }
 
-    @GetMapping("messages/{conversationId}")
+    @GetMapping("api/messages/{conversationId}")
     public List<ChatMessage> getConversationMessages(@PathVariable String conversationId) {
         // Retrieve messages for the specified conversation from the database
         return messageRepo.findByConversationId(conversationId);
