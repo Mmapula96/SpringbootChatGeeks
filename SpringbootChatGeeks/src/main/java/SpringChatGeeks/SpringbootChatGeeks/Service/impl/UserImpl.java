@@ -88,7 +88,11 @@ public class UserImpl implements UserService {
         User contactUser = userRepo.findById(contactUserId).orElse(null);
 
         if (loggedInUser != null && contactUser != null) {
-            // Check if the contact is not already in the chat list
+
+            if(loggedInUser.equals(contactUser)){
+                throw new IllegalArgumentException("Cannot add yourself");
+            }
+
 
 
             if (!contactRepo.existsByUserAndContactUser(loggedInUser, contactUser)) {
@@ -97,7 +101,6 @@ public class UserImpl implements UserService {
                 System.out.println("Contact added successfully!");
             }else {
                 // The contact is already in the chat list
-                // You may want to handle this case, e.g., by returning a different response
                 System.out.println("Contact is already in the chat list.");
             }
         }

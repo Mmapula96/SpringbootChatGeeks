@@ -30,7 +30,7 @@ public class MessageController {
     public void sendMessage(@DestinationVariable String ConversationID, ChatMessage chatMessage) {
         messageRepo.save(chatMessage);
 
-      //  messagingTemplate.convertAndSend("/topic/messages/", chatMessage);
+      messagingTemplate.convertAndSend("/topic/messages/", chatMessage);
 
         String conversationTopic = "/topic/messages/" + ConversationID;
         System.out.println("Sending message to " + conversationTopic);

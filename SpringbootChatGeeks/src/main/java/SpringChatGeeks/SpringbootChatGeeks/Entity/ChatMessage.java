@@ -28,6 +28,7 @@ public class ChatMessage {
         this.sender = sender;
         this.conversationId = conversationId;
         this.timestamp = LocalDateTime.now();
+
     }
 
     public Integer getId() {
