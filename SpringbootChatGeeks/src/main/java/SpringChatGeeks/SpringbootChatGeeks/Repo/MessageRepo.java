@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @EnableJpaRepositories
@@ -15,4 +16,5 @@ import java.util.List;
 public interface MessageRepo extends JpaRepository<ChatMessage,Integer> {
     List<ChatMessage> findByConversationId(String conversationId);
 
+    Optional<ChatMessage> findTopByConversationIdOrderByTimestampDesc(String conversationId);
 }

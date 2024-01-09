@@ -36,10 +36,10 @@ public class UserController {
     @GetMapping("/search/{name}")
     public List<User> searchUsersByUsername(@PathVariable String name) {
         System.out.println("searching");
-        List<User> users =userService.searchUsersByUsername(name);
+        List<User> users = userService.searchUsersByUsername(name);
         System.out.println(users);
 
-        return userService.searchUsersByUsername(name);
+        return users;
     }
 
     public UserController(UserService userService) {
@@ -81,7 +81,6 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
 
-        // You can add more details or modify the user object as needed
         return ResponseEntity.ok(selectedUser);
     }
 
