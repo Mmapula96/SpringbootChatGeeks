@@ -16,5 +16,6 @@ import java.util.Optional;
 public interface MessageRepo extends JpaRepository<ChatMessage,Integer> {
     List<ChatMessage> findByConversationId(String conversationId);
 
+
     Optional<ChatMessage> findTopByConversationIdOrderByTimestampDesc(String conversationId);
 }

@@ -33,6 +33,7 @@ public class MessageController {
     public void sendMessage(@DestinationVariable String ConversationID, ChatMessage chatMessage) {
         System.out.println(chatMessage);
         System.out.println("Server's Current Time: " + LocalDateTime.now());
+        chatMessage.setTimestamp( LocalDateTime.now());
         messageRepo.save(chatMessage);
 
       messagingTemplate.convertAndSend("/topic/messages/", chatMessage);
@@ -43,10 +44,13 @@ public class MessageController {
     }
 
     @GetMapping("api/messages/{conversationId}")
-    public List<ChatMessage> getConversationMessages(@PathVariable String conversationId) {
+    public List<ChatMessage> getMessages(@PathVariable String conversationId) {
         // Retrieve messages for the specified conversation from the database
         return messageRepo.findByConversationId(conversationId);
     }
+
+
+
 
     //get tle last message to the chatlist
     @GetMapping("api/messages/last/{conversationId}")
