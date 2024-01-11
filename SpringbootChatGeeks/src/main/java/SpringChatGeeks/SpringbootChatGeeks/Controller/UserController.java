@@ -9,6 +9,7 @@ import SpringChatGeeks.SpringbootChatGeeks.Repo.UserRepo;
 import SpringChatGeeks.SpringbootChatGeeks.Service.UserService;
 import SpringChatGeeks.SpringbootChatGeeks.response.LoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,11 +67,17 @@ public class UserController {
 
 
     }
+
+
     @GetMapping("/{loggedInUserId}/chat-list")
     public ResponseEntity<List<User>> getChatList(@PathVariable int loggedInUserId) {
         List<User> chatList = userService.getChatList(loggedInUserId);
-        return ResponseEntity.ok(chatList);
 
+        if (chatList != null && !chatList.isEmpty()) {
+            return new ResponseEntity<>(chatList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
     @GetMapping("/selected-user/{selectedUserId}")
     public ResponseEntity<User> getSelectedUser(@PathVariable int selectedUserId) {

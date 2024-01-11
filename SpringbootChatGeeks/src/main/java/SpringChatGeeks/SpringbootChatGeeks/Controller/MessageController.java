@@ -49,9 +49,6 @@ public class MessageController {
         return messageRepo.findByConversationId(conversationId);
     }
 
-
-
-
     //get tle last message to the chatlist
     @GetMapping("api/messages/last/{conversationId}")
     public ResponseEntity<ChatMessage> getLastMessage(@PathVariable String conversationId) {
