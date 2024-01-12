@@ -4,10 +4,12 @@ package SpringChatGeeks.SpringbootChatGeeks.Service.impl;
 import SpringChatGeeks.SpringbootChatGeeks.Entity.ChatMessage;
 import SpringChatGeeks.SpringbootChatGeeks.Repo.MessageRepo;
 import SpringChatGeeks.SpringbootChatGeeks.Service.MessageService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class MessageImpl implements MessageService {
 
     @Autowired
@@ -18,7 +20,7 @@ public class MessageImpl implements MessageService {
         this.messageRepo = messageRepo;
     }
 
-
+   @Override
     public void saveMessage(ChatMessage chatMessage) {
         messageRepo.save(chatMessage);
     }

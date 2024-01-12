@@ -1,5 +1,7 @@
 package SpringChatGeeks.SpringbootChatGeeks.Entity;
 
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -14,7 +16,7 @@ public class ChatMessage {
     private String content;
     private String sender;
     private String conversationId;
-
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime timestamp;
 
