@@ -29,20 +29,7 @@ public class UserController {
 
 
     private ContactRepo contactRepo;
-    @GetMapping("/all")
-    public List<User> getAllUsers() {
-        return userRepo.findAll();
-    }
 
-    @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping("/search/{name}")
-    public List<User> searchUsersByUsername(@PathVariable String name) {
-        System.out.println("searching");
-        List<User> users = userService.searchUsersByUsername(name);
-        System.out.println(users);
-
-        return users;
-    }
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -59,6 +46,22 @@ public class UserController {
 
         LoginResponse loginResponse= userService.loginUser(loginDto);
         return ResponseEntity.ok(loginResponse);
+    }
+
+
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/search/{name}")
+    public List<User> searchUsersByUsername(@PathVariable String name) {
+        System.out.println("searching");
+        List<User> users = userService.searchUsersByUsername(name);
+        System.out.println(users);
+
+        return users;
+    }
+    @GetMapping("/all")
+    public List<User> getAllUsers() {
+        return userRepo.findAll();
     }
 
     @PostMapping("/{loggedInUserId}/add-contact/{contactUserId}")
